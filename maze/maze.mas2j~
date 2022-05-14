@@ -1,7 +1,0 @@
-MAS maze {
-    infrastructure: Centralised
-
-    environment: maze.MazeEnv()
-
-    agents: ag;
-}
