@@ -120,53 +120,52 @@ public class WorldModel extends GridWorldModel {
         return true;
     }
 
-    private void addVerticalWall(int x, int[] y) {
-        for (int i = 0; i < y.length; i += 2) {
-            model.addWall(x, y[i], x, y[i + 1]);
-        }
-    }
-
-    private void addHorizontalWall(int[] x, int y) {
-        for (int i = 0; i < x.length; i += 2) {
-            model.addWall(x[i], y, x[i + 1], y);
-        }
-    }
-
     static WorldModel world() throws Exception {
-        WorldModel model = WorldModel.create(20, 20);
-        int x, y;
+        // 0: free
+        // 1: obstacle
+        // 2: entrance, agent
+        // 3: exit
+        int map[][] = new int[][] {
+            {1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+            {1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,0,1},
+            {1,0,1,0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0,1},
+            {1,0,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1,1,1},
+            {1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0,1},
+            {1,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,1},
+            {1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1},
+            {1,0,1,1,1,1,0,1,0,1,1,1,1,1,0,1,1,1,1,1},
+            {1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1},
+            {1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1},
+            {1,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,1},
+            {1,0,1,1,1,0,1,0,1,1,1,1,0,1,0,1,1,1,1,1},
+            {1,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,0,1},
+            {1,0,1,0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,1},
+            {1,0,1,0,1,1,1,0,1,0,1,1,0,1,0,1,1,1,0,1},
+            {1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1},
+            {1,0,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,0,1},
+            {1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1},
+        };
 
-        model.setAgPos(0, 1, 0);
+        WorldModel model = WorldModel.create(map.length, map[0].length);
 
-        model.add(WorldModel.ENTRANCE, 1, 0);
-        model.add(WorldModel.EXIT, 18, 19);
-
-        model.addHorizontalWall(new int[] {2,19}, 0);
-        model.addHorizontalWall(new int[] {2,3, 7,9, 13,17}, 2);
-        model.addHorizontalWall(new int[] {2,7, 9,11, 17,19}, 4);
-        model.addHorizontalWall(new int[] {0,1, 5,7, 11,15}, 6);
-        model.addHorizontalWall(new int[] {2,5, 9,13, 15,19}, 8);
-        model.addHorizontalWall(new int[] {0,1, 3,7, 9,17}, 10);
-        model.addHorizontalWall(new int[] {2,4, 8,11, 15,19}, 12);
-        model.addHorizontalWall(new int[] {4,6, 15,17}, 15);
-        model.addHorizontalWall(new int[] {2,6, 10,17}, 17);
-        model.addHorizontalWall(new int[] {0,17}, 19);
-
-        model.addVerticalWall(0, new int[] {0,19});
-        model.addVerticalWall(2, new int[] {2,4, 12,15, 17,19});
-        model.addVerticalWall(3, new int[] {4,6, 8,10});
-        model.addVerticalWall(4, new int[] {12,15});
-        model.addVerticalWall(5, new int[] {0,4, 6,8});
-        model.addVerticalWall(6, new int[] {10,15});
-        model.addVerticalWall(7, new int[] {4,6, 8,10});
-        model.addVerticalWall(8, new int[] {12,19});
-        model.addVerticalWall(9, new int[] {2,4, 6,8, 10,12});
-        model.addVerticalWall(10, new int[] {14,17});
-        model.addVerticalWall(11, new int[] {0,2, 4,6, 8,10, 12,15});
-        model.addVerticalWall(13, new int[] {2,4, 6,8, 10,15});
-        model.addVerticalWall(15, new int[] {2,6, 12,15});
-        model.addVerticalWall(17, new int[] {4,6, 14,15});
-        model.addVerticalWall(19, new int[] {0,19});
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                switch (map[y][x]) {
+                    case 1:
+                        model.add(WorldModel.OBSTACLE, x, y);
+                        break;
+                    case 2:
+                        model.setAgPos(0, x, y);
+                        model.add(WorldModel.ENTRANCE, x, y);
+                        break;
+                    case 3:
+                        model.add(WorldModel.EXIT, x, y);
+                        break;
+                }
+            }
+        }
 
         return model;
     }
