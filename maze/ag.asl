@@ -5,13 +5,14 @@
 algo(random_mouse).
 
 /* Rules */
-left_free :- not left_cell(obstacle) & not left_cell(entrance).
-front_free :- not front_cell(obstacle) & not front_cell(entrance).
-right_free :- not right_cell(obstacle) & not right_cell(entrance).
+left_free :- not cell(left,obstacle) & not cell(left,entrance).
+front_free :- not cell(front,obstacle) & not cell(front,entrance).
+right_free :- not cell(right,obstacle) & not cell(right,entrance).
 left_front_right_free :- left_free & front_free & right_free.
 left_front_free :- left_free & front_free & not right_free.
 front_right_free :- not left_free & front_free & right_free.
 left_right_free :- left_free & not front_free & right_free.
+in_junction :- left_front_right_free | left_front_free | front_right_free | left_right_free.
 
 
 /* Wall Follower */
@@ -48,7 +49,7 @@ left_right_free :- left_free & not front_free & right_free.
 /* ------------------------------------------------------------------------- */
 @p4
 +!next_move : algo(random_mouse) & 
-	not r(R) & (left_front_right_free | left_front_free | front_right_free | left_right_free)
+	not r(R) & in_junction
 	<-
 	.random(R);
 	-+r(R);
@@ -59,7 +60,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_front_right_free & R < 1/3
 	<-
-	.print("R < 1/3, turn_left, move_fwd");
 	turn_left;
 	move_fwd;
 	-r(R);
@@ -69,7 +69,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_front_right_free & R >= 1/3 & R < 2/3
 	<-
-	.print("R >= 1/3 & R < 2/3, move_fwd");
 	move_fwd;
 	-r(R);
 	!next_move.
@@ -78,7 +77,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_front_right_free & R < 2/3
 	<-
-	.print("R < 2/3, turn_right, move_fwd");
 	turn_right;
 	move_fwd;
 	-r(R);
@@ -88,7 +86,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_front_free & R < 1/2
 	<-
-	.print("R < 1/2, turn_left, move_fwd");
 	turn_left;
 	move_fwd;
 	-r(R);
@@ -98,7 +95,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_front_free & R >= 1/2
 	<-
-	.print("R >= 1/2, move_fwd");
 	move_fwd;
 	-r(R);
 	!next_move.
@@ -107,7 +103,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & front_right_free & R < 1/2
 	<-
-	.print("R < 1/2, move_fwd");
 	move_fwd;
 	-r(R);
 	!next_move.
@@ -116,7 +111,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & front_right_free & R >= 1/2
 	<-
-	.print("R >= 1/2, turn_right, move_fwd");
 	turn_right;
 	move_fwd;
 	-r(R);
@@ -126,7 +120,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_right_free & R < 1/2 
 	<-
-	.print("R < 1/2, turn_left, move_fwd");
 	turn_left;
 	move_fwd;
 	-r(R);
@@ -136,7 +129,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	r(R) & left_right_free & R >= 1/2
 	<-
-	.print("R >= 1/2, turn_right, move_fwd");
 	turn_right;
 	move_fwd;
 	-r(R);
@@ -146,7 +138,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	left_free
 	<-
-	.print("turn_left, move_fwd");
 	turn_left;
 	move_fwd;
 	!next_move.
@@ -155,7 +146,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	front_free
 	<-
-	.print("move_fwd");
 	move_fwd;
 	!next_move.
 
@@ -163,7 +153,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	right_free
 	<-
-	.print("turn_right, move_fwd");
 	turn_right;
 	move_fwd;
 	!next_move.
@@ -172,7 +161,6 @@ left_right_free :- left_free & not front_free & right_free.
 +!next_move : algo(random_mouse) &
 	true
 	<-
-	.print("turn_left, turn_left, move_fwd");
 	turn_left;
 	turn_left;
 	move_fwd;

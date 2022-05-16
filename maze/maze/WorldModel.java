@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 public class WorldModel extends GridWorldModel {
     public static final int ENTRANCE = 16;
     public static final int EXIT = 32;
+    public static final int MARKED_ONCE = 64;
+    public static final int MARKED_TWICE = 128;
 
     private Logger logger = Logger.getLogger("maze.mas2j");
 
@@ -117,6 +119,18 @@ public class WorldModel extends GridWorldModel {
         }
         Location l = getAgPos(0);
         setAgPos(0, l.x, l.y);
+        return true;
+    }
+
+    boolean mark() throws Exception {
+        Location l = getAgPos(0);
+
+        if (model.hasObject(WorldModel.MARKED_ONCE, l.x, l.y)) {
+            model.set(WorldModel.MARKED_TWICE, l.x, l.y);
+        } else {
+            model.set(WorldModel.MARKED_ONCE, l.x, l.y);
+        }
+
         return true;
     }
 

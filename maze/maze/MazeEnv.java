@@ -20,6 +20,7 @@ public class MazeEnv extends jason.environment.Environment {
     Term moveFwd = Literal.parseLiteral("move_fwd");
     Term turnLeft = Literal.parseLiteral("turn_left");
     Term turnRight = Literal.parseLiteral("turn_right");
+    Term mark = Literal.parseLiteral("mark");
 
     @Override
     public void init(String[] args) {
@@ -44,6 +45,8 @@ public class MazeEnv extends jason.environment.Environment {
                 result = model.turnLeft();
             } else if (action.equals(turnRight)) {
                 result = model.turnRight();
+            } else if (action.equals(mark)) {
+                result = model.mark();
             } else {
                 logger.info("executing: " + action + ", but not implemented!");
             }
@@ -86,40 +89,40 @@ public class MazeEnv extends jason.environment.Environment {
 
         switch (model.getDir()) {
             case UP:
-                updateAgPercept("front_cell", l.x, l.y - 1);
-                updateAgPercept("back_cell", l.x, l.y + 1);
-                updateAgPercept("left_cell", l.x - 1, l.y);
-                updateAgPercept("right_cell", l.x + 1, l.y);
+                updateAgPercept("cell", "front", l.x, l.y - 1);
+                updateAgPercept("cell", "left", l.x - 1, l.y);
+                updateAgPercept("cell", "right", l.x + 1, l.y);
                 break;
             case DOWN:
-                updateAgPercept("front_cell", l.x, l.y + 1);
-                updateAgPercept("back_cell", l.x, l.y - 1);
-                updateAgPercept("left_cell", l.x + 1, l.y);
-                updateAgPercept("right_cell", l.x - 1, l.y);
+                updateAgPercept("cell", "front", l.x, l.y + 1);
+                updateAgPercept("cell", "left", l.x + 1, l.y);
+                updateAgPercept("cell", "right", l.x - 1, l.y);
                 break;
             case RIGHT:
-                updateAgPercept("front_cell", l.x + 1, l.y);
-                updateAgPercept("back_cell", l.x - 1, l.y);
-                updateAgPercept("left_cell", l.x, l.y - 1);
-                updateAgPercept("right_cell", l.x, l.y + 1);
+                updateAgPercept("cell", "front", l.x + 1, l.y);
+                updateAgPercept("cell", "left", l.x, l.y - 1);
+                updateAgPercept("cell", "right", l.x, l.y + 1);
                 break;
             case LEFT:
-                updateAgPercept("front_cell", l.x - 1, l.y);
-                updateAgPercept("back_cell", l.x + 1, l.y);
-                updateAgPercept("left_cell", l.x, l.y + 1);
-                updateAgPercept("right_cell", l.x, l.y - 1);
+                updateAgPercept("cell", "front", l.x - 1, l.y);
+                updateAgPercept("cell", "left", l.x, l.y + 1);
+                updateAgPercept("cell", "right", l.x, l.y - 1);
                 break;
         }
     }
 
-    private void updateAgPercept(String percept, int x, int y) {
+    private void updateAgPercept(String percept, String arg1, int x, int y) {
         if (model == null || !model.inGrid(x,y)) return;
         if (model.hasObject(WorldModel.OBSTACLE, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(obstacle)"));
+            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "obstacle)"));
         } else if (model.hasObject(WorldModel.ENTRANCE, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(entrance)"));
+            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "entrance)"));
         } else if (model.hasObject(WorldModel.EXIT, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(exit)"));
+            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "exit)"));
+        } else if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
+            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "marked_once)"));
+        } else if (model.hasObject(WorldModel.MARKED_TWICE, x, y)) {
+            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "marked_twice)"));
         }
     }
 
