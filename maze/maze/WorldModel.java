@@ -122,13 +122,48 @@ public class WorldModel extends GridWorldModel {
         return true;
     }
 
-    boolean mark() throws Exception {
+    void markCell(int x, int y) throws Exception {
+        if (model.hasObject(WorldModel.ENTRANCE, x, y)) return;
+
+        if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
+            model.set(WorldModel.MARKED_TWICE, x, y);
+        } else if (!model.hasObject(WorldModel.MARKED_TWICE, x, y)) {
+            model.set(WorldModel.MARKED_ONCE, x, y);
+        }
+    }
+
+    boolean markCell() throws Exception {
         Location l = getAgPos(0);
 
-        if (model.hasObject(WorldModel.MARKED_ONCE, l.x, l.y)) {
-            model.set(WorldModel.MARKED_TWICE, l.x, l.y);
-        } else {
-            model.set(WorldModel.MARKED_ONCE, l.x, l.y);
+        markCell(l.x, l.y);
+
+        return true;
+    }
+
+    boolean markBackCell() throws Exception {
+        Location l = getAgPos(0);
+
+        switch (getDir()) {
+            case UP:
+                if (isFree(l.x, l.y + 1)) {
+                    markCell(l.x, l.y + 1);
+                }
+                break;
+            case DOWN:
+                if (isFree(l.x, l.y - 1)) {
+                    markCell(l.x, l.y - 1);
+                }
+                break;
+            case RIGHT:
+                if (isFree(l.x - 1, l.y)) {
+                    markCell(l.x - 1, l.y);
+                }
+                break;
+            case LEFT:
+                if (isFree(l.x + 1, l.y)) {
+                    markCell(l.x + 1, l.y);
+                }
+                break;
         }
 
         return true;

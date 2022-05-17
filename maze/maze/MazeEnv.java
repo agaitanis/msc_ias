@@ -20,7 +20,8 @@ public class MazeEnv extends jason.environment.Environment {
     Term moveFwd = Literal.parseLiteral("move_fwd");
     Term turnLeft = Literal.parseLiteral("turn_left");
     Term turnRight = Literal.parseLiteral("turn_right");
-    Term mark = Literal.parseLiteral("mark");
+    Term markCell = Literal.parseLiteral("mark_cell");
+    Term markBackCell = Literal.parseLiteral("mark_back_cell");
 
     @Override
     public void init(String[] args) {
@@ -45,8 +46,10 @@ public class MazeEnv extends jason.environment.Environment {
                 result = model.turnLeft();
             } else if (action.equals(turnRight)) {
                 result = model.turnRight();
-            } else if (action.equals(mark)) {
-                result = model.mark();
+            } else if (action.equals(markCell)) {
+                result = model.markCell();
+            } else if (action.equals(markBackCell)) {
+                result = model.markBackCell();
             } else {
                 logger.info("executing: " + action + ", but not implemented!");
             }
