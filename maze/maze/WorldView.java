@@ -109,8 +109,8 @@ public class WorldView extends GridWorldView {
                 g.fillRect(x * cellSizeW, y * cellSizeH, cellSizeW, cellSizeH);
                 break;
             case WorldModel.MARKED_ONCE:
-                g.setColor(Color.orange);
-                g.drawOval(x * cellSizeW, y * cellSizeH, cellSizeW, cellSizeH);
+                g.setColor(Color.blue);
+                drawString(g, x, y, defaultFont, "O");
                 break;
             case WorldModel.MARKED_TWICE:
                 g.setColor(Color.red);

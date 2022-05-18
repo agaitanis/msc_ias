@@ -1,7 +1,7 @@
 /* Initial Beliefs */
-algo(wall_follower).
+//algo(wall_follower).
 //algo(random_mouse).
-//algo(tremaux).
+algo(tremaux).
 
 /* Rules */
 left_cell_free :- not cell(left,obstacle) & not cell(left,entrance) & not cell(left,marked_twice).
