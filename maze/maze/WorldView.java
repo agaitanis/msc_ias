@@ -39,6 +39,7 @@ public class WorldView extends GridWorldView {
     }
 
     JSlider jSpeed;
+    JLabel jCellsVisited;
 
     @Override
     public void initComponents(int width) {
@@ -71,6 +72,12 @@ public class WorldView extends GridWorldView {
         msg.setLayout(new BoxLayout(msg, BoxLayout.Y_AXIS));
         msg.setBorder(BorderFactory.createEtchedBorder());
 
+        p = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        p.add(new JLabel("Cells visited:"));
+        jCellsVisited = new JLabel("0");
+        p.add(jCellsVisited);
+        msg.add(p);
+
         JPanel s = new JPanel(new BorderLayout());
         s.add(BorderLayout.WEST, args);
         s.add(BorderLayout.CENTER, msg);
@@ -84,6 +91,10 @@ public class WorldView extends GridWorldView {
                 }
             }
         });
+    }
+
+    public void updateCellsVisited(int cellsVisited) {
+        jCellsVisited.setText(Integer.toString(cellsVisited));
     }
 
     @Override

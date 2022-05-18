@@ -14,8 +14,8 @@ public class WorldModel extends GridWorldModel {
     public static final int MARKED_TWICE = 128;
 
     private Logger logger = Logger.getLogger("maze.mas2j");
-
     private String id = "WorldModel";
+    private int cellsVisited = 0;
 
     public enum Direction {
         UP, DOWN, RIGHT, LEFT
@@ -53,6 +53,10 @@ public class WorldModel extends GridWorldModel {
         dir = new_dir;
     }
 
+    public int getCellsVisited() {
+        return cellsVisited;
+    }
+
     /** Actions **/
     boolean moveFwd() throws Exception {
         Location l = getAgPos(0);
@@ -61,21 +65,25 @@ public class WorldModel extends GridWorldModel {
             case UP:
                 if (isFree(l.x, l.y - 1)) {
                     setAgPos(0, l.x, l.y - 1);
+                    cellsVisited++;
                 }
                 break;
             case DOWN:
                 if (isFree(l.x, l.y + 1)) {
                     setAgPos(0, l.x, l.y + 1);
+                    cellsVisited++;
                 }
                 break;
             case RIGHT:
                 if (isFree(l.x + 1, l.y)) {
                     setAgPos(0, l.x + 1, l.y);
+                    cellsVisited++;
                 }
                 break;
             case LEFT:
                 if (isFree(l.x - 1, l.y)) {
                     setAgPos(0, l.x - 1, l.y);
+                    cellsVisited++;
                 }
                 break;
         }

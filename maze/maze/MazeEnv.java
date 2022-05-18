@@ -42,6 +42,7 @@ public class MazeEnv extends jason.environment.Environment {
 
             if (action.equals(moveFwd)) {
                 result = model.moveFwd();
+                view.updateCellsVisited(model.getCellsVisited());
             } else if (action.equals(turnLeft)) {
                 result = model.turnLeft();
             } else if (action.equals(turnRight)) {
