@@ -16,6 +16,8 @@ in_junction :- left_front_right_cell_free | left_front_cell_free | front_right_c
 /* Initial Plan */
 !next_move.
 
++!next_move : cell(exit) <- true.
+
 /* Wall Follower */
 /* ------------------------------------------------------------------------- */
 +!next_move : algo(wall_follower) & 

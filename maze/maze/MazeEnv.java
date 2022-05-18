@@ -87,46 +87,61 @@ public class MazeEnv extends jason.environment.Environment {
 
     private void updateAgPercept() {
         clearPercepts("ag");
-        // its location
+
         Location l = model.getAgPos(0);
-        addPercept("ag", Literal.parseLiteral("pos(" + l.x + "," + l.y + ")"));
+        updateAgPercept(l.x, l.y);
 
         switch (model.getDir()) {
             case UP:
-                updateAgPercept("cell", "front", l.x, l.y - 1);
-                updateAgPercept("cell", "left", l.x - 1, l.y);
-                updateAgPercept("cell", "right", l.x + 1, l.y);
+                updateAgPercept("front", l.x, l.y - 1);
+                updateAgPercept("left", l.x - 1, l.y);
+                updateAgPercept("right", l.x + 1, l.y);
                 break;
             case DOWN:
-                updateAgPercept("cell", "front", l.x, l.y + 1);
-                updateAgPercept("cell", "left", l.x + 1, l.y);
-                updateAgPercept("cell", "right", l.x - 1, l.y);
+                updateAgPercept("front", l.x, l.y + 1);
+                updateAgPercept("left", l.x + 1, l.y);
+                updateAgPercept("right", l.x - 1, l.y);
                 break;
             case RIGHT:
-                updateAgPercept("cell", "front", l.x + 1, l.y);
-                updateAgPercept("cell", "left", l.x, l.y - 1);
-                updateAgPercept("cell", "right", l.x, l.y + 1);
+                updateAgPercept("front", l.x + 1, l.y);
+                updateAgPercept("left", l.x, l.y - 1);
+                updateAgPercept("right", l.x, l.y + 1);
                 break;
             case LEFT:
-                updateAgPercept("cell", "front", l.x - 1, l.y);
-                updateAgPercept("cell", "left", l.x, l.y + 1);
-                updateAgPercept("cell", "right", l.x, l.y - 1);
+                updateAgPercept("front", l.x - 1, l.y);
+                updateAgPercept("left", l.x, l.y + 1);
+                updateAgPercept("right", l.x, l.y - 1);
                 break;
         }
     }
-
-    private void updateAgPercept(String percept, String arg1, int x, int y) {
+	
+	private void updateAgPercept(int x, int y) {
         if (model == null || !model.inGrid(x,y)) return;
         if (model.hasObject(WorldModel.OBSTACLE, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "obstacle)"));
+            addPercept("ag", Literal.parseLiteral("cell(obstacle)"));
         } else if (model.hasObject(WorldModel.ENTRANCE, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "entrance)"));
+            addPercept("ag", Literal.parseLiteral("cell(entrance)"));
         } else if (model.hasObject(WorldModel.EXIT, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "exit)"));
+            addPercept("ag", Literal.parseLiteral("cell(exit)"));
         } else if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "marked_once)"));
+            addPercept("ag", Literal.parseLiteral("cell(marked_once)"));
         } else if (model.hasObject(WorldModel.MARKED_TWICE, x, y)) {
-            addPercept("ag", Literal.parseLiteral(percept + "(" + arg1 + "," + "marked_twice)"));
+            addPercept("ag", Literal.parseLiteral("cell(marked_twice)"));
+        }
+    }
+
+    private void updateAgPercept(String arg1, int x, int y) {
+        if (model == null || !model.inGrid(x,y)) return;
+        if (model.hasObject(WorldModel.OBSTACLE, x, y)) {
+            addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "obstacle)"));
+        } else if (model.hasObject(WorldModel.ENTRANCE, x, y)) {
+            addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "entrance)"));
+        } else if (model.hasObject(WorldModel.EXIT, x, y)) {
+            addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "exit)"));
+        } else if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
+            addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "marked_once)"));
+        } else if (model.hasObject(WorldModel.MARKED_TWICE, x, y)) {
+            addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "marked_twice)"));
         }
     }
 

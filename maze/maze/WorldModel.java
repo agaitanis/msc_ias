@@ -132,6 +132,7 @@ public class WorldModel extends GridWorldModel {
 
     void markCell(int x, int y) throws Exception {
         if (model.hasObject(WorldModel.ENTRANCE, x, y)) return;
+		if (model.hasObject(WorldModel.EXIT, x, y)) return;
 
         if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
             model.set(WorldModel.MARKED_TWICE, x, y);
