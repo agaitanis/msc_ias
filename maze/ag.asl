@@ -1,7 +1,7 @@
 /* Initial Beliefs */
-//algo(wall_follower).
+algo(wall_follower).
 //algo(random_mouse).
-algo(tremaux).
+//algo(tremaux).
 
 /* Rules */
 left_cell_free :- not cell(left,obstacle) & not cell(left,entrance) & not cell(left,marked_twice).
@@ -16,6 +16,7 @@ in_junction :- left_front_right_cell_free | left_front_cell_free | front_right_c
 /* Initial Plan */
 !next_move.
 
+/* Common Plan */
 +!next_move : cell(exit) <- true.
 
 /* Wall Follower */

@@ -117,17 +117,9 @@ public class MazeEnv extends jason.environment.Environment {
 	
 	private void updateAgPercept(int x, int y) {
         if (model == null || !model.inGrid(x,y)) return;
-        if (model.hasObject(WorldModel.OBSTACLE, x, y)) {
-            addPercept("ag", Literal.parseLiteral("cell(obstacle)"));
-        } else if (model.hasObject(WorldModel.ENTRANCE, x, y)) {
-            addPercept("ag", Literal.parseLiteral("cell(entrance)"));
-        } else if (model.hasObject(WorldModel.EXIT, x, y)) {
+		if (model.hasObject(WorldModel.EXIT, x, y)) {
             addPercept("ag", Literal.parseLiteral("cell(exit)"));
-        } else if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
-            addPercept("ag", Literal.parseLiteral("cell(marked_once)"));
-        } else if (model.hasObject(WorldModel.MARKED_TWICE, x, y)) {
-            addPercept("ag", Literal.parseLiteral("cell(marked_twice)"));
-        }
+		}
     }
 
     private void updateAgPercept(String arg1, int x, int y) {
