@@ -14,7 +14,8 @@ public class MazeEnv extends jason.environment.Environment {
 
     WorldModel model;
     WorldView view;
-
+	
+	String algo;
     int sleep = 500;
 
     Term moveFwd = Literal.parseLiteral("move_fwd");
@@ -25,7 +26,8 @@ public class MazeEnv extends jason.environment.Environment {
 
     @Override
     public void init(String[] args) {
-        initWorld();
+		algo = args[1];
+        initWorld(args[0]);
     }
 
     public void setSleep(int s) {
@@ -65,9 +67,9 @@ public class MazeEnv extends jason.environment.Environment {
         return false;
     }
 
-    public void initWorld() {
+    public void initWorld(String map_type) {
         try {
-            model = WorldModel.world();
+            model = WorldModel.world(map_type);
 
             clearPercepts();
 
@@ -87,6 +89,8 @@ public class MazeEnv extends jason.environment.Environment {
 
     private void updateAgPercept() {
         clearPercepts("ag");
+		
+		addPercept("ag", Literal.parseLiteral("algo(" + algo + ")"));
 
         Location l = model.getAgPos(0);
         updateAgPercept(l.x, l.y);

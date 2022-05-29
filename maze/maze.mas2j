@@ -1,7 +1,9 @@
 MAS maze {
     infrastructure: Centralised
 
-    environment: maze.MazeEnv()
+    environment: maze.MazeEnv(map_a,wall_follower)
+		// parameters: 1. map: {map_a, map_b}
+		//             2. algorithm: {wall_follower, random_mouse, tremaux} 
 
     agents: ag;
 }
