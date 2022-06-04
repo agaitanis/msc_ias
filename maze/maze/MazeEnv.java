@@ -132,8 +132,6 @@ public class MazeEnv extends jason.environment.Environment {
             addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "obstacle)"));
         } else if (model.hasObject(WorldModel.ENTRANCE, x, y)) {
             addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "entrance)"));
-        } else if (model.hasObject(WorldModel.EXIT, x, y)) {
-            addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "exit)"));
         } else if (model.hasObject(WorldModel.MARKED_ONCE, x, y)) {
             addPercept("ag", Literal.parseLiteral("cell(" + arg1 + "," + "marked_once)"));
         } else if (model.hasObject(WorldModel.MARKED_TWICE, x, y)) {
